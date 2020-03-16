@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    font-family: "Noto Sans", "Noto Sans CJK SC", "Source Han Sans CN", "Microsoft Yahei", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+}
+
+ ::selection {
+    color: #ffffff;
+    background-color: #c2300b;
+    text-shadow: none;
+}
+
+ ::-webkit-scrollbar-track-piece {
+    background-color: #fff;
+    border-radius: 6px;
+}
+
+ ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+ ::-webkit-scrollbar-thumb {
+    height: 40px;
+    background: #999;
+    border-radius: 6px;
+}
+
+ul,
+li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+em {
+    color: #00bcd4;
+}
+
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: #00bcd4;
+}
+
+.t {
+    transition: all 0.3s
+}
