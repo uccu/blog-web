@@ -48,8 +48,12 @@ a:active {
     color: inherit;
 }
 
+a {
+    cursor: pointer;
+}
+
 a:hover {
-    color: #00bcd4;
+    color: #4dd0e1;
 }
 
 .t {

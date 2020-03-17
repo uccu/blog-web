@@ -1,88 +1,59 @@
 <template>
   <div>
-    <div class="top"></div>
-
-    <div class="slide-top"></div>
-
-    <div class="side t" v-bind:class="{ show: showSide }">
-      <div class="side-title">
-        <span class="iconfont icon-home"></span>
-        {{home}}
-      </div>
-      <ul class="side-list">
-        <a v-for="m in menu" v-bind:key="m" href="#">
-          <li class="t">{{ m }}</li>
-        </a>
-      </ul>
-    </div>
+    <TopBar v-bind:siteName="siteName" v-on:click-menu="showSide = true" />
+    <SlideTopBar v-bind:siteName="siteName" v-on:click-menu="showSide = true" />
+    <Side v-bind:showSide="showSide" v-bind:menu="menu" v-on:click-cover="showSide = false" />
   </div>
 </template>
 
 <script>
+import { api } from "../Service/tool";
+import STATIC from "../Service/static";
+import Side from "./Side.vue";
+import TopBar from "./TopBar.vue";
+import SlideTopBar from "./SlideTopBar.vue";
 export default {
   name: "Header",
   data: function() {
     return {
-      showSide: true,
-      home: "",
+      siteName: "Y4",
+      showSide: false,
       menu: [2020, 2019]
     };
   },
-  props: {}
+  watch: {
+    showSide: function(showSide, oldVal) {
+      if (showSide == oldVal) return showSide;
+      if (showSide) {
+        document.styleSheets[0].addRule("body", "overflow:hidden !important");
+      } else {
+        document.styleSheets[0].deleteRule(
+          document.styleSheets[0].rules.length - 1
+        );
+      }
+      return showSide;
+    }
+  },
+  components: {
+    Side,
+    TopBar,
+    SlideTopBar
+  },
+  props: {},
+  methods: {
+    openSlide() {
+      console.log("emit openSide");
+      this.showSide = true;
+    }
+  },
+  mounted() {
+    api(STATIC.API_LIST.MENU).then(data => {
+      this.menu = data.list;
+    });
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@media (max-width: 1465px) {
-  .side {
-    left: -250px;
-  }
-}
-@media (min-width: 1465px) {
-  .side.show {
-    left: 0;
-  }
-}
-.side {
-  left: -250px;
-  position: fixed;
-  width: 250px;
-  height: 100%;
-  box-shadow: 0 0 10px #ccc;
-  z-index: 10000;
-  background-color: #fff;
-}
-.side-title {
-  width: 100%;
-  text-align: center;
-  font-size: 30px;
-  cursor: pointer;
-  padding: 0.5em 0;
-  margin-bottom: 1em;
-  border-bottom: 1px solid #f0f0f0;
-}
-.side-list {
-  text-align: right;
-  font-weight: bold;
-  font-size: 20px;
-  cursor: pointer;
-}
-.side-list li {
-  padding: 0.2em 1.5em;
-  position: relative;
-  overflow: hidden;
-  margin-left: 5em;
-  transition: margin-left 0.8s ease-out, all 0.3s, transform 0.1s linear;
-}
-
-.side-list li:hover:active {
-  background-color: #eeeeee;
-  transform: scale(1.05);
-}
-
-.side-list li:hover {
-  background-color: #f3f3f3;
-  margin-left: 3em;
-}
 </style>
