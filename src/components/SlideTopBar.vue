@@ -43,6 +43,7 @@ export default {
   }
 }
 .slide-top-bar {
+  z-index: 9998;
   position: fixed;
   top: -50px;
   left: 0;

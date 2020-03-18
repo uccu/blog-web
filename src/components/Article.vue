@@ -1,25 +1,20 @@
 <template>
   <div class="article-container">
-    <div class="article-blank"></div>
-    <div class="article-list">
-      <div class="one-article" v-for="a in articles" v-bind:key="a.id">
-        <div
-          v-if="a.thumb"
-          class="one-article-picture"
-          v-bind:style="{'background-image':'url(\''+a.thumb+'\')','background-color':'#f0f0f0'}"
-        ></div>
-        <div v-if="a.title" class="one-article-title">
-          <a class="t">{{a.title}}</a>
-        </div>
-        <div v-if="a.description" class="one-article-description">{{a.description}}</div>
-        <div class="one-article-hr"></div>
-        <div class="one-article-tags">
-          <span class="iconfont icon-date">{{a.createTime}}</span>
-          <span class="iconfont icon-menu">
-            <a class="t">{{a.categoryName}}</a>
-          </span>
-          <span class="iconfont icon-view">{{a.view}}</span>
-          <span class="iconfont icon-reply">{{a.reply}}</span>
+    <div class="article-blank t"></div>
+    <div class="article-box">
+      <div class="article-list">
+        <div class="one-article" v-for="a in articles" v-bind:key="a.id" v-on:click="goto(a.id)">
+          <div
+            v-if="a.thumb"
+            class="one-article-picture"
+            v-bind:style="{'background-image':'url(\''+a.thumb+'\')','background-color':'#f0f0f0'}"
+          ></div>
+          <div v-if="a.title" class="one-article-title">
+            <a class="t">{{a.title}}</a>
+          </div>
+          <div v-if="a.description" class="one-article-description">{{a.description}}</div>
+          <div class="one-article-hr"></div>
+          <Tag v-bind:data="a"/>
         </div>
       </div>
       <div class="article-bottom">
@@ -31,9 +26,10 @@
 </template>
 
 <script>
-import { api } from "../Service/tool";
+import { api, goto } from "../Service/tool";
 import STATIC from "../Service/static";
 import Loading from "./Loading.vue";
+import Tag from "./Tag.vue";
 export default {
   name: "Article",
   data: function() {
@@ -46,12 +42,13 @@ export default {
     };
   },
   components: {
-    Loading
+    Loading,
+    Tag
   },
   props: {},
   methods: {
+    goto: v => goto("/article/" + v),
     handleScroll() {
-      console.log(1);
       const {
         offsetHeight,
         scrollTop,
@@ -63,21 +60,34 @@ export default {
       }
     },
     getArticle() {
-      console.log(2);
       if (this.noArticle) return;
       if (this.loadingPage) return;
-      console.log(3);
       this.page++;
       this.loadingPage = true;
-      api(STATIC.API_LIST.ARTICLES, { page: this.page }).then(data => {
-        this.articles.push(...data.list);
-        if (!data.list.length) {
+      let paths = location.pathname.split("/");
+      let data = { page: this.page };
+      if (paths[2]) {
+        data.categoryId = paths[2];
+      }
+      if (paths[3]) {
+        data.year = paths[3];
+      }
+      api(STATIC.API_LIST.ARTICLES, data)
+        .then(data => {
+          this.articles.push(...data.list);
+          if (!data.list.length) {
+            this.noArticle = true;
+            this.noArticleMsg = "没有更多文章了~";
+            window.removeEventListener("scroll", this.handleScroll);
+          }
+          this.loadingPage = false;
+        })
+        .catch(() => {
           this.noArticle = true;
           this.noArticleMsg = "没有更多文章了~";
           window.removeEventListener("scroll", this.handleScroll);
-        }
-        this.loadingPage = false;
-      });
+          this.loadingPage = false;
+        });
     }
   },
   mounted() {
@@ -101,15 +111,20 @@ export default {
 }
 .article-container {
   display: flex;
+  max-width: 100%;
 }
-.article-list {
+.article-box {
   flex: 1;
   text-align: center;
   padding-top: 20px;
+  max-width: 100%;
+  min-height: 300px;
 }
 .one-article {
   margin: 40px auto;
   width: 600px;
+  min-width: 600px;
+  max-width: 90%;
   text-align: left;
   box-shadow: 0 0 10px #ccc;
 }

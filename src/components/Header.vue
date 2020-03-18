@@ -25,11 +25,9 @@ export default {
     showSide: function(showSide, oldVal) {
       if (showSide == oldVal) return showSide;
       if (showSide) {
-        document.styleSheets[0].addRule("body", "overflow:hidden !important");
+        document.body.style.overflow = "hidden";
       } else {
-        document.styleSheets[0].deleteRule(
-          document.styleSheets[0].rules.length - 1
-        );
+        document.body.style.overflow = "";
       }
       return showSide;
     }
@@ -47,9 +45,11 @@ export default {
     }
   },
   mounted() {
-    api(STATIC.API_LIST.MENU).then(data => {
-      this.menu = data.list;
-    });
+    api(STATIC.API_LIST.MENU)
+      .then(data => {
+        this.menu = data.list;
+      })
+      .catch(() => {});
   }
 };
 </script>

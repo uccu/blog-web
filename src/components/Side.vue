@@ -5,7 +5,7 @@
         <span class="iconfont icon-home"></span>
       </div>
       <ul class="side-list">
-        <a v-for="m in menu" v-bind:key="m" href="#">
+        <a v-for="m in menu" v-bind:key="m" v-on:click="gotoYear(m)">
           <li class="t">{{ m }}</li>
         </a>
       </ul>
@@ -25,6 +25,9 @@ export default {
   methods: {
     gotoHome() {
       goto("/");
+    },
+    gotoYear(m) {
+      goto("/list/0/" + m);
     }
   }
 };

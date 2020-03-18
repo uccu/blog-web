@@ -8,7 +8,7 @@ let api = (url, params) => {
         data: qs.stringify(params),
         method: 'post',
         headers: { 'content-type': 'application/x-www-form-urlencoded' }
-    }).catch(error => console.log(error)).then(data => {
+    }).then(data => {
         if (data.data.code != 200) {
             console.log(data.message);
             throw data.message
@@ -19,8 +19,9 @@ let api = (url, params) => {
 
 
 let goto = url => {
-    history.replaceState({}, '', url);
+    history.pushState({}, '', url);
     smooth(document.documentElement, 'scrollTop', 0);
+    window.dispatchEvent(new Event('popstate'));
 }
 
 let smooth = async(obj, key, val, time = 300) => {
