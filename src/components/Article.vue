@@ -123,7 +123,6 @@ export default {
 .one-article {
   margin: 40px auto;
   width: 600px;
-  min-width: 600px;
   max-width: 90%;
   text-align: left;
   box-shadow: 0 0 10px #ccc;

@@ -72,6 +72,7 @@ export default {
 }
 .article {
   width: 800px;
+  max-width: 90%;
   opacity: 0;
   text-align: left;
   margin: auto;
@@ -90,5 +91,6 @@ export default {
   border-bottom: 1px solid #f0f0f0;
   margin: 10px 20px;
 }
+
 
 </style>

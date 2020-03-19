@@ -19,6 +19,7 @@ export default {
 }
 .article-content img {
   margin: auto;
+  max-width: 100%;
 }
 .article-content a {
   color: #00bcd4 !important;

@@ -20,6 +20,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@media (max-width: 500px) {
+  .icon-view,
+  .icon-reply {
+    display: none;
+  }
+}
 .one-article-tags {
   margin: 10px 20px;
   padding-bottom: 10px;

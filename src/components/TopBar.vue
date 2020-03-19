@@ -28,7 +28,7 @@ export default {
     cursor: pointer;
   }
   .top-bar .top-bar-title {
-    left: 150px;
+    left: 10%;
   }
 }
 @media (min-width: 1465px) {
