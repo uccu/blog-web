@@ -60,3 +60,11 @@ a:hover {
 .t {
     transition: all 0.3s
 }
+
+.df {
+    display: flex;
+}
+
+.f1 {
+    flex: 1;
+}

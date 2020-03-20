@@ -9,6 +9,7 @@
         <div class="article-hr"></div>
         <Content v-bind:content="info.content" />
       </div>
+      <Comment v-bind:class="{show:!loading}" v-bind:id="info.id" v-if="!loading" />
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ import { api } from "../Service/tool";
 import STATIC from "../Service/static";
 import Loading from "./Loading.vue";
 import Content from "./Content.vue";
+import Comment from "./Comment.vue";
 import { markdown } from "markdown";
 import Tag from "./Tag.vue";
 export default {
@@ -28,7 +30,7 @@ export default {
       loading: true
     };
   },
-  components: { Tag, Loading, Content },
+  components: { Tag, Loading, Content, Comment },
   props: {},
   methods: {},
   mounted() {
@@ -91,6 +93,4 @@ export default {
   border-bottom: 1px solid #f0f0f0;
   margin: 10px 20px;
 }
-
-
 </style>

@@ -16,6 +16,7 @@ export default {
   margin: 10px 20px;
   min-height: 500px;
   margin-bottom: 50px;
+  padding-bottom: 20px;
 }
 .article-content img {
   margin: auto;
