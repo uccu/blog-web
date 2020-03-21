@@ -77,14 +77,14 @@ export default {
           this.articles.push(...data.list);
           if (!data.list.length) {
             this.noArticle = true;
-            this.noArticleMsg = "没有更多文章了~";
+            this.noArticleMsg = "没有更多文章了";
             window.removeEventListener("scroll", this.handleScroll);
           }
           this.loadingPage = false;
         })
         .catch(() => {
           this.noArticle = true;
-          this.noArticleMsg = "没有更多文章了~";
+          this.noArticleMsg = "没有更多文章了";
           window.removeEventListener("scroll", this.handleScroll);
           this.loadingPage = false;
         });
