@@ -1,7 +1,7 @@
 export default {
 
-    // API_BASE_URL: 'https://yoooo.co/',
-    API_BASE_URL: 'http://api.chat.baka/',
+    API_BASE_URL: 'https://yoooo.co/',
+    // API_BASE_URL: 'http://api.chat.baka/',
 
     API_LIST: {
 
