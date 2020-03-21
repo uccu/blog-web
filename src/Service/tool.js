@@ -10,8 +10,8 @@ let api = (url, params) => {
         headers: { 'content-type': 'application/x-www-form-urlencoded' }
     }).then(data => {
         if (data.data.code != 200) {
-            console.log(data.message);
-            throw data.message
+            console.log(data.data.message);
+            throw data.data.message
         }
         return data.data.data;
     });

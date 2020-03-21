@@ -93,6 +93,7 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
     this.getArticle();
+    document.title = 'Y4';
   }
 };
 </script>

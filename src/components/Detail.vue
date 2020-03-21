@@ -40,6 +40,7 @@ export default {
         data.info.content = markdown.toHTML(data.info.content);
         this.info = data.info;
         this.loading = false;
+        document.title = data.info.title;
       })
       .catch(() => {
         this.loading = false;

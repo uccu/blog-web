@@ -1,9 +1,11 @@
 <template>
-  <div class="comment">
+  <div class="comment" id="comment">
     <div class="reply-box">
       <div class="df email-and-name">
         <div class="email f1">
-          <label for="email"><span class="iconfont icon-mail"></span>邮箱：</label>
+          <label for="email">
+            <span class="iconfont icon-mail"></span>邮箱：
+          </label>
           <span>
             <input
               id="email"
@@ -17,7 +19,9 @@
           </span>
         </div>
         <div class="name f1">
-          <label for="name"><span class="iconfont icon-name"></span>名字：</label>
+          <label for="name">
+            <span class="iconfont icon-name"></span>名字：
+          </label>
           <span>
             <input
               id="name"
@@ -32,7 +36,16 @@
         </div>
       </div>
       <div class="comment-area">
-        <textarea name="comment" id="comment" v-model="comment" cols="30" rows="4" placeholder="请填写内容（审核后显示）"></textarea>
+        <textarea
+          name="comment"
+          id="comment"
+          cols="30"
+          rows="4"
+          v-bind:class="{active:comment}"
+          v-on:keyup="inputKeyup($event)"
+          v-on:mouseup="inputKeyup($event)"
+          placeholder="请填写内容（审核后显示）"
+        ></textarea>
       </div>
       <div class="reply">
         <span class="iconfont icon-fasong" v-on:click="reply"></span>
@@ -48,6 +61,7 @@
           <h5>{{r.name}}</h5>
           <p>{{r.comment}}</p>
           <div class="time">{{r.createTime}}</div>
+          <div class="replyit" v-on:click="replyit(r.name)">回复</div>
         </div>
       </div>
       <div class="article-bottom">
@@ -74,7 +88,8 @@ export default {
       loadingPage: false,
       noArticle: false,
       noArticleMsg: "下拉加载更多回复~",
-      page: 0
+      page: 0,
+      replyNameList: new Set()
     };
   },
   components: {
@@ -84,8 +99,61 @@ export default {
     id: String
   },
   methods: {
-    inputKeyup(e) {
-      console.log(e);
+    inputKeyup() {
+      const t = document.getElementsByTagName("textarea")[0];
+      this.replyNameList.forEach(e => {
+        if (t.value.search("@" + e + " ") === -1) {
+          this.replyNameList.delete(e);
+        }
+      });
+      this.comment = t.value;
+
+      let arr = [],
+        lens = 0;
+      this.replyNameList.forEach(e => {
+        let len = e.length;
+        arr.push({ name: e, length: len, start: lens, end: lens + len + 2 });
+        lens += len + 2;
+      });
+
+      for (let i = arr.length - 1; i >= 0; i--) {
+        if (t.selectionStart > arr[i].start && t.selectionStart < arr[i].end) {
+          t.selectionStart = arr[i].start;
+        }
+      }
+      for (let i = 0; i < arr.length; i++) {
+        if (t.selectionEnd > arr[i].start && t.selectionEnd < arr[i].end) {
+          t.selectionEnd = arr[i].end;
+        }
+      }
+    },
+    replyit(name) {
+      let len = 0;
+      this.replyNameList.forEach(e => {
+        len += e.length + 2;
+      });
+      if (name) {
+        this.replyNameList.add(name.replace(" ", "-"));
+        let names = "";
+        this.replyNameList.forEach(e => {
+          names += "@" + e + " ";
+        });
+        const t = document.getElementsByTagName("textarea")[0];
+        this.comment = t.value = names + t.value.slice(len);
+        len = 0;
+        this.replyNameList.forEach(e => {
+          len += e.length + 2;
+        });
+        document
+          .getElementsByTagName("textarea")[0]
+          .setSelectionRange(len - name.length - 2, len);
+      }
+
+      document.documentElement.scrollTop =
+        document.getElementById("comment").getBoundingClientRect().top +
+        document.documentElement.scrollTop -
+        document.documentElement.clientHeight / 3;
+      document.getElementsByTagName("textarea")[0].focus();
     },
     reply() {
       if (this.sending == true) return;
@@ -96,6 +164,7 @@ export default {
           this.name = "";
           this.email = "";
           this.comment = "";
+          document.getElementsByTagName("textarea")[0].value = '';
           this.sending = false;
           this.page = 0;
           this.noArticle = false;
@@ -213,6 +282,14 @@ export default {
   outline: none;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: all 0.3s;
+}
+.comment-area textarea:focus {
+  border: 1px solid #4dd0e1;
+  box-shadow: 0 0 5px #4dd0e1;
+}
+.comment-area textarea.active {
+  border: 1px solid #4dd0e1;
 }
 input {
   outline: none;
@@ -233,7 +310,7 @@ input:focus ~ .input-bottom-bar,
 input.active ~ .input-bottom-bar {
   width: calc(100% - 20px);
 }
-label span{
+label span {
   font-size: 1.1em;
 }
 .reply {
@@ -341,5 +418,17 @@ h5:hover {
   font-size: 0.5em;
   color: #ccc;
   cursor: default;
+}
+.replyit {
+  position: absolute;
+  right: 7px;
+  top: 5px;
+  font-size: 0.5em;
+  color: #00bcd4;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.replyit:hover {
+  color: #4dd0e1;
 }
 </style>
