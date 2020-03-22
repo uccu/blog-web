@@ -20,7 +20,6 @@ import STATIC from "../Service/static";
 import Loading from "./Loading.vue";
 import Content from "./Content.vue";
 import Comment from "./Comment.vue";
-import { markdown } from "markdown";
 import Tag from "./Tag.vue";
 export default {
   name: "Detail",
@@ -37,7 +36,6 @@ export default {
     this.loading = true;
     api(STATIC.API_LIST.ARTICLE, { id: location.pathname.split("/")[2] })
       .then(data => {
-        data.info.content = markdown.toHTML(data.info.content);
         this.info = data.info;
         this.loading = false;
         document.title = data.info.title;

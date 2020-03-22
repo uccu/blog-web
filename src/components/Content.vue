@@ -3,10 +3,17 @@
 </template>
 
 <script>
+// import hljs from "highlight.js";
+import "../assets/css/highlight/vs2015.css";
 export default {
   name: "Content",
   props: {
     content: String
+  },
+  updated() {
+    this.$el.querySelectorAll("pre code").forEach(block => {
+      window.hljs.highlightBlock(block);
+    });
   }
 };
 </script>
@@ -17,41 +24,5 @@ export default {
   min-height: 500px;
   margin-bottom: 50px;
   padding-bottom: 20px;
-}
-.article-content img {
-  margin: auto;
-  max-width: 100%;
-}
-.article-content a {
-  color: #00bcd4 !important;
-  transition: all 0.3s;
-}
-.article-content a:hover {
-  color: #4dd0e1 !important;
-}
-.article-content code {
-  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
-  color: #666;
-  white-space: pre;
-  padding: 16px;
-  overflow: auto;
-  font-size: 0.85rem;
-  line-height: 1.6rem;
-  -webkit-font-smoothing: initial;
-  -moz-osx-font-smoothing: initial;
-  background-color: #f6f8fa;
-  border-radius: 3px;
-  display: block;
-}
-.article-content p em {
-  cursor: pointer;
-  padding: 0 3px;
-}
-.article-content em {
-  color: #00bcd4 !important;
-  transition: all 0.3s;
-}
-.article-content em:hover {
-  color: #4dd0e1 !important;
 }
 </style>
