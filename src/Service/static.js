@@ -11,7 +11,8 @@ export default {
         REPLY: 'blog/reply',
         REPLYS: 'blog/getReplyList',
 
-    }
+    },
+    VERSION: '0.1.0'
 
 
 

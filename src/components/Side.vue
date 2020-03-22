@@ -9,6 +9,7 @@
           <li class="t">{{ m }}</li>
         </a>
       </ul>
+      <div class="version">v{{version}}</div>
     </div>
     <div class="cover" v-on:click="$emit('click-cover')" v-bind:class="{ show: showSide }"></div>
   </div>
@@ -16,11 +17,17 @@
 
 <script>
 import { goto } from "../Service/tool";
+import STATIC from "../Service/static";
 export default {
   name: "Side",
   props: {
     showSide: Boolean,
     menu: Array
+  },
+  data() {
+    return {
+      version: STATIC.VERSION
+    };
   },
   methods: {
     gotoHome() {
@@ -102,5 +109,12 @@ export default {
 .side-list li:hover {
   background-color: #f3f3f3;
   margin-left: 3em;
+}
+.version {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.8em;
+  color: #ccc;
 }
 </style>

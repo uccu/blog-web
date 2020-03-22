@@ -2,7 +2,7 @@
   <div>
     <Header />
     <Article v-if="article" :key="article" />
-    <Detail v-if="detail" v-on:operationloading="pageLoading" />
+    <Detail v-if="detail" />
     <PageLoading v-bind:show="pageLoadingShow" color="white" />
     <Tips v-bind:data="tip" />
   </div>
@@ -48,11 +48,6 @@ export default {
     Tips
   },
   methods: {
-    async pageLoading(e) {
-      this.pageLoadingShow = true;
-      await e();
-      this.pageLoadingShow = false;
-    },
     goto() {
       let paths = location.pathname.split("/");
       if (location.pathname == "/") {
