@@ -98,6 +98,7 @@ export default {
   props: {
     id: String
   },
+  inject: ["tips"],
   methods: {
     inputKeyup() {
       const t = document.getElementsByTagName("textarea")[0];
@@ -159,24 +160,27 @@ export default {
       if (this.sending == true) return;
       this.sending = true;
       let { name, email, comment, id } = this;
+      this.$parent.$parent.pageLoadingShow = true;
       api(STATIC.API_LIST.REPLY, { name, email, comment, id })
         .then(() => {
+          this.$parent.$parent.pageLoadingShow = false;
           this.name = "";
           this.email = "";
           this.comment = "";
-          document.getElementsByTagName("textarea")[0].value = '';
+          document.getElementsByTagName("textarea")[0].value = "";
           this.sending = false;
           this.page = 0;
           this.noArticle = false;
-          alert("回复成功");
+          this.tips('回复成功', "success");
           this.replys = [];
           window.removeEventListener("scroll", this.handleScroll);
           window.addEventListener("scroll", this.handleScroll);
           this.getReply();
         })
         .catch(e => {
+          this.$parent.$parent.pageLoadingShow = false;
           this.sending = false;
-          alert(e);
+          this.tips(e, "error");
         });
     },
     handleScroll() {
@@ -215,7 +219,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.id);
     window.addEventListener("scroll", this.handleScroll);
     this.getReply();
   }

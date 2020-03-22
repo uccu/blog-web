@@ -18,7 +18,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .spinner {
   margin: 0px auto;
   width: 50px;
